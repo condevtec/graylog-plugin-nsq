@@ -88,21 +88,7 @@ public class NsqTransport extends ThrottleableTransport {
     public static class Config extends ThrottleableTransport.Config {
         @Override
         public ConfigurationRequest getRequestedConfiguration() {
-            final NsqClientConfiguration r = new NsqClientConfiguration(super.getRequestedConfiguration());
-            //r.addField(new TextField(
-            //        CK_CHANNELS,
-            //        "Channels",
-            //        "",
-            //        "Comma-separated list of channels to subscribe to",
-            //        ConfigurationField.Optional.OPTIONAL));
-            //r.addField(new TextField(
-            //        CK_PATTERNS,
-            //        "Channel patterns",
-            //        "",
-            //        "Comma-separated list of channel patterns to subscribe to",
-            //        ConfigurationField.Optional.OPTIONAL));
-//
-            return r;
+            return new NsqClientConfiguration(super.getRequestedConfiguration());
         }
     }
 }
