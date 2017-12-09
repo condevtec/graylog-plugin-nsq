@@ -1,6 +1,7 @@
 package org.graylog.plugins.nsq;
 
 import com.google.common.collect.ImmutableList;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.graylog2.plugin.configuration.ConfigurationRequest;
 import org.graylog2.plugin.configuration.fields.ConfigurationField;
 import org.graylog2.plugin.configuration.fields.NumberField;
@@ -35,7 +36,7 @@ public class NsqClientConfiguration extends ConfigurationRequest {
                                 ConfigurationField.Optional.NOT_OPTIONAL))
                         .add(new TextField(CHANNEL,
                                 "CHANNEL",
-                                "graylog-nsq#ephemeral",
+                                String.format("set-your-channel-%s#ephemeral", RandomStringUtils.randomAscii(5)),
                                 "channel for consumption. Default is emphemeral channel",
                                 ConfigurationField.Optional.NOT_OPTIONAL))
                         .add(new NumberField(MAX_IN_FLIGHT,
