@@ -36,7 +36,7 @@ public class NsqClientConfiguration extends ConfigurationRequest {
                                 ConfigurationField.Optional.NOT_OPTIONAL))
                         .add(new TextField(CHANNEL,
                                 "CHANNEL",
-                                String.format("set-your-channel-%s#ephemeral", RandomStringUtils.randomAscii(5)),
+                                String.format("set-your-channel-%s#ephemeral", RandomStringUtils.randomAlphanumeric(5)),
                                 "channel for consumption. Default is emphemeral channel",
                                 ConfigurationField.Optional.NOT_OPTIONAL))
                         .add(new NumberField(MAX_IN_FLIGHT,
