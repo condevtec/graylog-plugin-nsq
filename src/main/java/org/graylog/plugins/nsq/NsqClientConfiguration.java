@@ -6,6 +6,7 @@ import org.graylog2.plugin.configuration.ConfigurationRequest;
 import org.graylog2.plugin.configuration.fields.ConfigurationField;
 import org.graylog2.plugin.configuration.fields.NumberField;
 import org.graylog2.plugin.configuration.fields.TextField;
+import org.graylog2.plugin.inputs.transports.ThrottleableTransport;
 
 import static java.util.Objects.requireNonNull;
 
@@ -17,6 +18,7 @@ public class NsqClientConfiguration extends ConfigurationRequest {
 
     public NsqClientConfiguration(ConfigurationRequest configurationRequest) {
         this(requireNonNull(configurationRequest, "configurationRequest").getFields().values());
+        configurationRequest.getField(ThrottleableTransport.CK_THROTTLING_ALLOWED).setDefaultValue(true);
     }
 
     NsqClientConfiguration(Iterable<ConfigurationField> fields) {

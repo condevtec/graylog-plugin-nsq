@@ -21,15 +21,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 
 public class NsqTransport extends ThrottleableTransport {
     private static final Logger LOG = LoggerFactory.getLogger(NsqTransport.class);
-
-    private static final Charset UTF_8 = StandardCharsets.UTF_8;
-    private static final String CK_CHANNELS = "channels";
-    private static final String CK_PATTERNS = "patterns";
 
     private final Configuration configuration;
     private final LocalMetricRegistry localRegistry;
@@ -51,8 +45,8 @@ public class NsqTransport extends ThrottleableTransport {
             @Override
             public void message(NSQMessage nsqMessage) {
                 final RawMessage rawMessage = new RawMessage(nsqMessage.getMessage());
-                input.processRawMessage(rawMessage);
                 nsqMessage.finished();
+                input.processRawMessage(rawMessage);
             }
         });
 
@@ -85,7 +79,7 @@ public class NsqTransport extends ThrottleableTransport {
     }
 
     @ConfigClass
-    public static class Config extends ThrottleableTransport.Config {
+    public static class Config extends NsqThrottleableTransport.Config {
         @Override
         public ConfigurationRequest getRequestedConfiguration() {
             return new NsqClientConfiguration(super.getRequestedConfiguration());
