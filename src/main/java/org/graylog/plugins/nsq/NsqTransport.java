@@ -47,6 +47,12 @@ public class NsqTransport extends ThrottleableTransport {
                 final RawMessage rawMessage = new RawMessage(nsqMessage.getMessage());
                 nsqMessage.finished();
                 input.processRawMessage(rawMessage);
+
+                // do throttle the code
+                if (isThrottled()) {
+                    blockUntilUnthrottled();
+                }
+
             }
         });
 
