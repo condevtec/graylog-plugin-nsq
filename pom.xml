@@ -8,7 +8,7 @@
     </parent>
 
     <artifactId>graylog-plugin-nsq</artifactId>
-    <version>1.0.1</version>
+    <version>1.0.2</version>
     <packaging>jar</packaging>
 
     <name>${project.artifactId}</name>
@@ -42,6 +42,7 @@
             <version>1.0.0.RC4</version>
             <exclusions>
                 <!-- Mitigation for https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2021-44228 as long as the root repo is not fixed.-->
+                <!-- Graylog contains Log4j in a non-vulnerable version.-->
                 <exclusion>
                     <groupId>org.apache.logging.log4j</groupId>
                     <artifactId>log4j-core</artifactId>
@@ -51,17 +52,6 @@
                     <artifactId>log4j-api</artifactId>
                 </exclusion>
             </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-core</artifactId>
-            <version>2.16.0</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-api</artifactId>
-            <version>2.16.0</version>
         </dependency>
         <dependency>
             <groupId>com.google.auto.service</groupId>
