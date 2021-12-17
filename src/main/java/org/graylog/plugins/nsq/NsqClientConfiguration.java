@@ -6,6 +6,7 @@ import org.graylog2.plugin.configuration.ConfigurationRequest;
 import org.graylog2.plugin.configuration.fields.ConfigurationField;
 import org.graylog2.plugin.configuration.fields.NumberField;
 import org.graylog2.plugin.configuration.fields.TextField;
+import org.graylog2.plugin.inputs.transports.ThrottleableTransport;
 
 import static java.util.Objects.requireNonNull;
 
@@ -17,6 +18,7 @@ public class NsqClientConfiguration extends ConfigurationRequest {
 
     public NsqClientConfiguration(ConfigurationRequest configurationRequest) {
         this(requireNonNull(configurationRequest, "configurationRequest").getFields().values());
+        configurationRequest.getField(ThrottleableTransport.CK_THROTTLING_ALLOWED).setDefaultValue(true);
     }
 
     NsqClientConfiguration(Iterable<ConfigurationField> fields) {
@@ -36,7 +38,7 @@ public class NsqClientConfiguration extends ConfigurationRequest {
                                 ConfigurationField.Optional.NOT_OPTIONAL))
                         .add(new TextField(CHANNEL,
                                 "CHANNEL",
-                                String.format("set-your-channel-%s#ephemeral", RandomStringUtils.randomAscii(5)),
+                                String.format("set-your-channel-%s#ephemeral", RandomStringUtils.randomAlphanumeric(5)),
                                 "channel for consumption. Default is emphemeral channel",
                                 ConfigurationField.Optional.NOT_OPTIONAL))
                         .add(new NumberField(MAX_IN_FLIGHT,
