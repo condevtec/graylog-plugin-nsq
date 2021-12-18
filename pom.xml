@@ -1,18 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <prerequisites>
-        <maven>3.0.3</maven>
-    </prerequisites>
-
     <parent>
         <groupId>org.graylog.plugins</groupId>
         <artifactId>graylog-plugin-parent</artifactId>
-        <version>2.2.0</version>
+        <version>3.3.15</version>
     </parent>
 
     <artifactId>graylog-plugin-nsq</artifactId>
-    <version>1.0.1</version>
+    <version>1.0.2</version>
     <packaging>jar</packaging>
 
     <name>${project.artifactId}</name>
@@ -23,7 +19,7 @@
         <connection>scm:git:git@github.com:condevtec/graylog-plugin-nsq.git</connection>
         <developerConnection>scm:git:git@github.com:condevtec/graylog-plugin-nsq.git</developerConnection>
         <url>https://github.com/condevtec/graylog-plugin-nsq</url>
-        <tag>1.0.0</tag>
+        <tag>1.0.2</tag>
     </scm>
 
     <properties>
@@ -33,7 +29,7 @@
         <maven.deploy.skip>true</maven.deploy.skip>
         <maven.site.skip>true</maven.site.skip>
 
-        <graylog.version>2.2.0</graylog.version>
+        <graylog.version>3.3.15</graylog.version>
         <nsq.image>nsqio/nsq:latest</nsq.image>
         <nsq.port>4161</nsq.port>
         <nsq.host>127.0.0.1</nsq.host>
@@ -44,6 +40,18 @@
             <groupId>com.github.brainlag</groupId>
             <artifactId>nsq-client</artifactId>
             <version>1.0.0.RC4</version>
+            <exclusions>
+                <!-- Mitigation for https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2021-44228 as long as the root repo is not fixed.-->
+                <!-- Graylog contains Log4j in a non-vulnerable version.-->
+                <exclusion>
+                    <groupId>org.apache.logging.log4j</groupId>
+                    <artifactId>log4j-core</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.logging.log4j</groupId>
+                    <artifactId>log4j-api</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>com.google.auto.service</groupId>
@@ -79,6 +87,41 @@
             </resource>
         </resources>
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-enforcer-plugin</artifactId>
+                <version>3.0.0</version>
+                <executions>
+                    <execution>
+                        <id>enforce-versions</id>
+                        <goals>
+                            <goal>enforce</goal>
+                        </goals>
+                        <configuration>
+                            <rules>
+                                <requireMavenVersion>
+                                    <version>3.0</version>
+                                </requireMavenVersion>
+                                <requireJavaVersion>
+                                    <version>1.8</version>
+                                </requireJavaVersion>
+                            </rules>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.owasp</groupId>
+                <artifactId>dependency-check-maven</artifactId>
+                <version>6.5.0</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -151,7 +194,7 @@
             <plugin>
                 <groupId>io.fabric8</groupId>
                 <artifactId>docker-maven-plugin</artifactId>
-                <version>0.20.0</version>
+                <version>0.38.0</version>
                 <extensions>true</extensions>
                 <configuration>
                     <images>
@@ -185,8 +228,9 @@
             </plugin>
 
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-failsafe-plugin</artifactId>
-                <version>2.19.1</version>
+                <version>2.22.2</version>
                 <configuration>
                     <systemPropertyVariables>
                         <nsq.port>${nsq.port}</nsq.port>
