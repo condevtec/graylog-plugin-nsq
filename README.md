@@ -28,7 +28,7 @@ In order to release a new version of the plugin, run the following commands:
 
 ```
 $ mvn release:prepare
-$ mvn release:perform
+$ mvn release:perform -Dgpg.skip -Darguments=-Dgpg.skip
 ```
 
 This sets the version numbers, creates a tag and pushes to GitHub.
